@@ -1,7 +1,7 @@
 #!/bin/bash
 
 version="2016.6.27"
-pidgin_version="2.11.0"
+pidgin_version="2.12.0"
 devroot="$1"
 path="$2"
 
@@ -176,7 +176,7 @@ echo
 
 # Download GCC
 step "Downloading specific MinGW GCC"
-download "${cache}/${mingw}" "${mingw_base_url}/binutils/binutils-2.23.1/binutils-2.23.1-1-mingw32-bin.tar.lzma/download"
+download "${cache}/${mingw}" "${mingw_base_url}/binutils/binutils-2.24/binutils-2.24-1-mingw32-bin.tar.xz/download"
 download "${cache}/${mingw}" "${mingw_base_url}/gcc/Version4/gcc-4.7.2-1/gcc-core-4.7.2-1-mingw32-bin.tar.lzma/download"
 download "${cache}/${mingw}" "${mingw_base_url}/gcc/Version4/gcc-4.7.2-1/${gcc_source}.tar.lzma/download"
 download "${cache}/${mingw}" "${mingw_base_url}/gcc/Version4/gcc-4.7.2-1/libgcc-4.7.2-1-mingw32-dll-1.tar.lzma/download"
@@ -209,7 +209,7 @@ echo
 step "Downloading build dependencies"
 download "${cache}" "${gnome_base_url}/win32/dependencies/gettext-runtime-0.17-1.zip"
 download "${cache}" "${gnome_base_url}/win32/dependencies/gettext-tools-0.17.zip"
-download "${cache}" "${gnome_base_url}/win32/gtk+/2.14/gtk+-bundle_2.14.7-20090119_win32.zip"
+download "${cache}" "${gnome_base_url}/win32/gtk+/2.16/gtk+-bundle_2.16.6-20100912_win32.zip"
 download "${cache}" "${gnome_base_url}/win32/intltool/0.40/${intltool}.zip"
 download "${cache}" "${mingw_gcc44_url}/${gcc_core44}.tar.gz/download"
 download "${cache}" "${pidgin_base_url}/${gtkspell}.tar.bz2"
@@ -230,6 +230,11 @@ echo
 step "Extracting MinGW GCC"
 for tarball in "${cache}/${mingw}/"*".tar.lzma"; do
     extract lzma "${win32}/${mingw}" "$tarball"
+done
+echo
+
+for tarball in "${cache}/${mingw}/"*".tar.xz"; do
+    extract bsdtar "${win32}/${mingw}" "$tarball"
 done
 echo
 
@@ -266,7 +271,7 @@ extract zip    "${win32}/${nsis}/Plugins" "${cache}/Nsisunz.zip" nsisunz/Release
 extract zip    "${win32}/${perl_dir}"     "${cache}/${perl}.zip"
 extract zip    "${win32}/gettext-0.17"    "${cache}/gettext-runtime-0.17-1.zip"
 extract zip    "${win32}/gettext-0.17"    "${cache}/gettext-tools-0.17.zip"
-extract zip    "${win32}/gtk_2_0-2.14"    "${cache}/gtk+-bundle_2.14.7-20090119_win32.zip"
+extract zip    "${win32}/gtk_2_0-2.14"    "${cache}/gtk+-bundle_2.16.6-20100912_win32.zip"
 extract zip    "${win32}/${intltool}"     "${cache}/${intltool}.zip"
 extract gzip   "${win32}/${gcc_core44}"   "${cache}/${gcc_core44}.tar.gz"
 info "Installing" "SHA1 plugin for NSIS"; cp "${win32}/${pidgin_inst_deps}/SHA1Plugin.dll" "${win32}/${nsis}/Plugins"
