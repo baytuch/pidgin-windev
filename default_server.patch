@@ -1,0 +1,37 @@
+diff -x '*.o' -x '*.dll' -Naur pidgin-2.14.12.vanilla/libpurple/protocols/irc/irc.c pidgin-2.14.12/libpurple/protocols/irc/irc.c
+--- pidgin-2.14.12.vanilla/libpurple/protocols/irc/irc.c	2022-05-31 08:07:28.000000000 +0300
++++ pidgin-2.14.12/libpurple/protocols/irc/irc.c	2023-06-27 01:11:44.624896500 +0300
+@@ -1125,7 +1125,7 @@
+ 	split = purple_account_user_split_new(_("Server"), IRC_DEFAULT_SERVER, '@');
+ 	prpl_info.user_splits = g_list_append(prpl_info.user_splits, split);
+ 
+-	option = purple_account_option_int_new(_("Port"), "port", IRC_DEFAULT_PORT);
++	option = purple_account_option_int_new(_("Port"), "port", (IRC_DEFAULT_USE_SSL ? IRC_DEFAULT_SSL_PORT : IRC_DEFAULT_PORT));
+ 	prpl_info.protocol_options = g_list_append(prpl_info.protocol_options, option);
+ 
+ 	option = purple_account_option_string_new(_("Encodings"), "encoding", IRC_DEFAULT_CHARSET);
+@@ -1145,7 +1145,7 @@
+ 	prpl_info.protocol_options = g_list_append(prpl_info.protocol_options, option);
+ 	*/
+ 
+-	option = purple_account_option_bool_new(_("Use SSL"), "ssl", FALSE);
++	option = purple_account_option_bool_new(_("Use SSL"), "ssl", IRC_DEFAULT_USE_SSL);
+ 	prpl_info.protocol_options = g_list_append(prpl_info.protocol_options, option);
+ 
+ #ifdef HAVE_CYRUS_SASL
+diff -x '*.o' -x '*.dll' -Naur pidgin-2.14.12.vanilla/libpurple/protocols/irc/irc.h pidgin-2.14.12/libpurple/protocols/irc/irc.h
+--- pidgin-2.14.12.vanilla/libpurple/protocols/irc/irc.h	2022-04-28 07:44:54.000000000 +0300
++++ pidgin-2.14.12/libpurple/protocols/irc/irc.h	2023-06-27 01:24:47.959999500 +0300
+@@ -33,9 +33,10 @@
+ #include "roomlist.h"
+ #include "sslconn.h"
+ 
+-#define IRC_DEFAULT_SERVER "irc.libera.chat"
++#define IRC_DEFAULT_SERVER "irc.it-hobby.km.ua"
+ #define IRC_DEFAULT_PORT 6667
+-#define IRC_DEFAULT_SSL_PORT 994
++#define IRC_DEFAULT_SSL_PORT 6697
++#define IRC_DEFAULT_USE_SSL TRUE
+ 
+ #define IRC_DEFAULT_CHARSET "UTF-8"
+ #define IRC_DEFAULT_AUTODETECT FALSE
