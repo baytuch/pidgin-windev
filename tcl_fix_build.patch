@@ -1,0 +1,59 @@
+--- pidgin-2.14.12.vanilla/libpurple/plugins/tcl/Makefile.mingw	2021-12-21 04:44:54.000000000 +0200
++++ pidgin-2.14.12/libpurple/plugins/tcl/Makefile.mingw	2023-06-28 02:05:38.724746400 +0300
+@@ -8,9 +8,12 @@
+ include $(PIDGIN_TREE_TOP)/libpurple/win32/global.mak
+ 
+ TARGET = tcl
+-TCL_INC_DIR := $(TCL_LIB_TOP)/include
+ DEFINES += -DHAVE_TK -DUSE_TCL_STUBS -DUSE_TK_STUBS
+ 
++NEEDED_DLLS = \
++			$(TCL_LIB_TOP)/bin/tcl86.dll \
++			$(TCL_LIB_TOP)/bin/tk86.dll
++
+ ##
+ ## INCLUDE PATHS
+ ##
+@@ -21,16 +24,17 @@
+ 			-I$(GTK_TOP)/include \
+ 			-I$(GTK_TOP)/include/glib-2.0 \
+ 			-I$(GTK_TOP)/lib/glib-2.0/include \
+-			-I$(TCL_INC_DIR)
++			-I$(TCL_LIB_TOP)/include
+ 
+-LIB_PATHS +=		-L$(GTK_TOP)/lib \
++LIB_PATHS += \
++			-L$(GTK_TOP)/lib \
+ 			-L$(PURPLE_TOP) \
+-			-L$(TCL_LIB_TOP)
++			-L$(TCL_LIB_TOP)/lib
+ 
+ ##
+ ##  SOURCES, OBJECTS
+ ##
+-C_SRC =			tcl.c \
++C_SRC =		tcl.c \
+ 			tcl_cmd.c \
+ 			tcl_cmds.c \
+ 			tcl_glib.c \
+@@ -47,8 +51,10 @@
+ 			-lws2_32 \
+ 			-lintl \
+ 			-lpurple \
+-			-ltclstub84 \
+-			-ltkstub84
++			-ltclstub86 \
++			-ltkstub86 \
++			-ltcl86 \
++			-ltk86
+ 
+ include $(PIDGIN_COMMON_RULES)
+ 
+@@ -61,6 +67,7 @@
+ 
+ install: all $(PURPLE_INSTALL_PLUGINS_DIR)
+ 	cp $(TARGET).dll $(PURPLE_INSTALL_PLUGINS_DIR)
++	cp $(NEEDED_DLLS) $(PURPLE_INSTALL_DIR)
+ 
+ $(OBJECTS): $(PURPLE_CONFIG_H)
+ 
