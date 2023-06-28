@@ -1,0 +1,31 @@
+--- pidgin-2.14.12.vanilla/libpurple/plugins/tcl/tcl.c	2021-12-21 04:44:54.000000000 +0200
++++ pidgin-2.14.12/libpurple/plugins/tcl/tcl.c	2023-06-28 12:25:08.634451200 +0300
+@@ -453,7 +453,7 @@
+ 		g_strfreev(tokens);
+ 
+ 		regkey2 = g_strdup_printf("%s%s\\", regkey, version);
+-		if (!(major == 8 && minor == 4 && micro >= 5))
++		if (!(major == 8 && minor == 6 && micro >= 6))
+ 			purple_debug(PURPLE_DEBUG_INFO, "tcl", "Unsupported ActiveTCL version %s found.\n", version);
+ 		else if ((path = wpurple_read_reg_string(HKEY_LOCAL_MACHINE, regkey2, NULL)) || (path = wpurple_read_reg_string(HKEY_CURRENT_USER, regkey2, NULL))) {
+ 			char *tclpath;
+@@ -461,8 +461,8 @@
+ 
+ 			purple_debug(PURPLE_DEBUG_INFO, "tcl", "Loading ActiveTCL version %s from \"%s\"\n", version, path);
+ 
+-			tclpath = g_build_filename(path, "bin", "tcl84.dll", NULL);
+-			tkpath = g_build_filename(path, "bin", "tk84.dll", NULL);
++			tclpath = g_build_filename(path, "bin", "tcl86.dll", NULL);
++			tkpath = g_build_filename(path, "bin", "tk86.dll", NULL);
+ 
+ 			if(!(wtcl_CreateInterp = (LPFNTCLCREATEINTERP) wpurple_find_and_loadproc(tclpath, "Tcl_CreateInterp"))) {
+ 				purple_debug(PURPLE_DEBUG_INFO, "tcl", "tcl_win32_init error loading Tcl_CreateInterp\n");
+@@ -470,7 +470,7 @@
+ 				if(!(wtk_Init = (LPFNTKINIT) wpurple_find_and_loadproc(tkpath, "Tk_Init"))) {
+ 					HMODULE mod;
+ 					purple_debug(PURPLE_DEBUG_INFO, "tcl", "tcl_win32_init error loading Tk_Init\n");
+-					if((mod = GetModuleHandle("tcl84.dll")))
++					if((mod = GetModuleHandle("tcl86.dll")))
+ 						FreeLibrary(mod);
+ 				} else {
+ 					retval = TRUE;
