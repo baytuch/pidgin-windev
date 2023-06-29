@@ -1,0 +1,20 @@
+--- tcl8.6.6.vanilla/win/tclWinInit.c	2016-02-25 22:12:38.000000000 +0200
++++ tcl8.6.6/win/tclWinInit.c	2023-06-29 11:12:32.471976600 +0300
+@@ -348,8 +348,6 @@
+ 	ToUtf(wName, name);
+     }
+ 
+-    end = strrchr(name, '\\');
+-    *end = '\0';
+     p = strrchr(name, '\\');
+     if (p != NULL) {
+ 	end = p;
+@@ -357,7 +355,7 @@
+     *end = '\\';
+ 
+     TclWinNoBackslash(name);
+-    sprintf(end + 1, "lib/tcl%s", TCL_VERSION);
++    sprintf(end + 1, "tcl/lib/tcl%s", TCL_VERSION);
+     *lengthPtr = strlen(name);
+     *valuePtr = ckalloc(*lengthPtr + 1);
+     *encodingPtr = NULL;
